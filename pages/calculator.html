@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Calculator - MindPlay</title>
+    <link rel="stylesheet" href="../css/style.css">
+    <link rel="stylesheet" href="../css/calculator.css">
+    <link rel="icon" type="image/png" href="../assets/icons/favicon.png">
+    <link rel="icon" type="image/x-icon" href="../assets/icons/favicon.ico">
+</head>
+<body>
+    <nav class="navbar">
+        <div class="nav-brand">
+            <span>MindPlay ⚡</span>
+        </div>
+        <div class="nav-links">
+            <a href="../index.html" class="nav-link">Home</a>
+            <a href="../about.html" class="nav-link">About</a>
+            <a href="quiz.html" class="nav-link">Quiz</a>
+            <a href="personality.html" class="nav-link">Personality</a>
+            <a href="calculator.html" class="nav-link active">Calculator</a>
+        </div>
+    </nav>
+    <main>
+        <section class="calculator-hero">
+            <h1><span>⚡</span> Smart Calculator</h1>
+            <p>Advanced calculations with memory, history & converters</p>
+        </section>
+        <div class="calc-tabs">
+            <button class="tab-btn active" onclick="switchTab('basic')">Basic</button>
+            <button class="tab-btn" onclick="switchTab('scientific')">Scientific</button>
+            <button class="tab-btn" onclick="switchTab('converter')">Converter</button>
+        </div>
+        <div id="calculator-container">
+            <!-- Tabs content loaded by JS -->
+        </div>
+        <div id="history-panel" class="history-panel">
+            <h3>History</h3>
+            <div id="history-list">No calculations yet</div>
+            <button onclick="clearHistory()">Clear All</button>
+        </div>
+    </main>
+    <script src="../js/main.js"></script>
+    <script src="../js/calculator.js"></script>
+</body>
+</html>

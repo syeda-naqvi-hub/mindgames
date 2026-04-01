@@ -1,0 +1,198 @@
+/* Calculator - MindPlay Theme */
+.calculator-hero {
+    text-align: center;
+    padding: 2rem 0;
+    color: rgb(161, 155, 155);
+}
+
+.calculator-hero h1 {
+    font-size: 3rem;
+    background: linear-gradient(135deg, #667eea, #764ba2);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+    margin-bottom: 1rem;
+}
+
+.navbar {
+    background: rgba(255,255,255,0.1);
+    backdrop-filter: blur(20px);
+    padding: 1.5rem 2rem;
+    display: flex;
+    justify-content: center;
+    gap: 2.5rem;
+    border-bottom: 1px solid rgba(255,255,255,0.2);
+    box-shadow: 0 8px 32px rgba(102,126,234,0.2);
+}
+
+.nav-link {
+    color: white;
+    text-decoration: none;
+    padding: 0.8rem 1.5rem;
+    border-radius: 30px;
+    font-weight: 500;
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    position: relative;
+    font-size: 1.1rem;
+}
+
+.nav-link.active, .nav-link:hover {
+    background: linear-gradient(135deg, #667eea, #764ba2);
+    transform: translateY(-3px);
+    box-shadow: 0 15px 35px rgba(102,126,234,0.4);
+}
+
+.calc-tabs {
+    display: flex;
+    justify-content: center;
+    gap: 1rem;
+    margin: 2rem 0;
+}
+
+.tab-btn {
+    padding: 0.8rem 2rem;
+    border: none;
+    background: rgba(255,255,255,0.2);
+    color: white;
+    border-radius: 25px;
+    cursor: pointer;
+    backdrop-filter: blur(10px);
+    transition: all 0.3s ease;
+}
+
+.tab-btn.active, .tab-btn:hover {
+    background: linear-gradient(135deg, #667eea, #764ba2);
+    transform: translateY(-2px);
+    box-shadow: 0 10px 25px rgba(102,126,234,0.4);
+}
+
+#calculator-container {
+    max-width: 500px;
+    margin: 0 auto 2rem;
+    background: rgba(255,255,255,0.1);
+    backdrop-filter: blur(20px);
+    border-radius: 30px;
+    padding: 2.5rem;
+    box-shadow: 0 30px 60px rgba(0,0,0,0.3);
+    border: 1px solid rgba(255,255,255,0.2);
+}
+
+.display {
+    width: 100%;
+    height: 90px;
+    font-size: 2.8rem;
+    text-align: right;
+    padding: 1.5rem;
+    margin-bottom: 1.5rem;
+    border: none;
+    border-radius: 20px;
+    background: rgba(255,255,255,0.15);
+    color: white;
+    backdrop-filter: blur(15px);
+    box-shadow: inset 0 5px 15px rgba(0,0,0,0.2);
+}
+
+.buttons-grid {
+    display: grid;
+    grid-template-columns: repeat(5, 1fr);
+    gap: 1.2rem;
+}
+
+.btn {
+    aspect-ratio: 1;
+    font-size: 1.4rem;
+    font-weight: 600;
+    border: none;
+    border-radius: 20px;
+    cursor: pointer;
+    transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+    box-shadow: 0 8px 20px rgba(0,0,0,0.2);
+    position: relative;
+    overflow: hidden;
+}
+
+.btn::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: -100%;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(90deg, transparent, rgba(255,255,255,0.3), transparent);
+    transition: left 0.5s;
+}
+
+.btn:hover::before {
+    left: 100%;
+}
+
+.btn:active {
+    transform: scale(0.95);
+    box-shadow: 0 4px 10px rgba(0,0,0,0.3);
+}
+
+/* Button Colors - MindPlay Palette */
+.btn-number { background: linear-gradient(135deg, rgba(255,255,255,0.3), rgba(255,255,255,0.1)); color: #4a5568; }
+.btn-operator { background: linear-gradient(135deg, #f0932b, #eb4d4b); color: white; }
+.btn-function { background: linear-gradient(135deg, #667eea, #764ba2); color: white; }
+.btn-equals { background: linear-gradient(135deg, #00b894, #00cec9); color: white; grid-column: span 2; }
+.btn-memory { background: linear-gradient(135deg, #fdcb6e, #e17055); color: white; }
+.btn-clear { background: linear-gradient(135deg, #e17055, #d63031); color: white; }
+
+.history-panel {
+    max-width: 500px;
+    margin: 2rem auto;
+    background: rgba(255,255,255,0.1);
+    backdrop-filter: blur(20px);
+    border-radius: 20px;
+    padding: 2rem;
+    border: 1px solid rgba(255,255,255,0.2);
+}
+
+#history-list {
+    max-height: 200px;
+    overflow-y: auto;
+    margin: 1rem 0;
+    color: white;
+}
+
+.history-item {
+    padding: 0.5rem;
+    margin-bottom: 0.5rem;
+    background: rgba(255,255,255,0.1);
+    border-radius: 10px;
+    cursor: pointer;
+    transition: background 0.2s;
+}
+
+.history-item:hover {
+    background: rgba(255,255,255,0.2);
+}
+
+/* Tab content */
+.tab-content {
+    display: none;
+}
+
+.tab-content.active {
+    display: block;
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+    .buttons-grid {
+        grid-template-columns: repeat(4, 1fr);
+    }
+    .btn-equals {
+        grid-column: span 1;
+    }
+    .navbar {
+        gap: 1rem;
+        padding: 1rem;
+    }
+    .nav-link {
+        padding: 0.5rem 1rem;
+        font-size: 1rem;
+    }
+}
+
