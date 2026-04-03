@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Quiz - MindPlay</title>
+    <link rel="stylesheet" href="../css/style.css">
+    <link rel="stylesheet" href="../css/quiz.css">
+</head>
+<body>
+
+    <nav class="navbar">
+        <div class="nav-brand">
+            <span>MindPlay 🧠</span>
+        </div>
+        <div class="nav-links">
+            <a href="../index.html" class="nav-link">Home</a>
+            <a href="../about.html" class="nav-link">About</a>
+            <a href="quiz.html" class="nav-link active">Quiz</a>
+            <a href="personality.html" class="nav-link">Personality</a>
+            <a href="calculator.html" class="nav-link">Calculator</a>
+        </div>
+    </nav>
+
+
+    <main>
+        <div id="quiz-app">
+            <!-- Welcome Screen -->
+            <div id="welcome-screen" class="screen active">
+                <div class="welcome-hero">
+                    <h1 class="quiz-title">Brain Blitz Quiz</h1>
+                    <p class="quiz-subtitle">Test your knowledge across 5 categories!</p>
+                    <div class="category-grid" id="category-grid">
+                        <!-- Categories loaded by JS -->
+                    </div>
+                    <div class="quick-play">
+                        <button id="quick-play-btn" class="btn-primary btn-large">Quick Play (10 Questions)</button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Quiz Screen -->
+            <div id="quiz-screen" class="screen">
+                <div class="quiz-header">
+                    <div class="timer-circle" id="timer-circle">
+                        <span id="timer-text">30</span>
+                    </div>
+                    <div class="progress-info">
+                        <span id="question-counter">Q1/10</span>
+                        <span id="score-display">Score: 0</span>
+                    </div>
+                </div>
+                <div id="question-container" class="question-card">
+                    <!-- Question loaded by JS -->
+                </div>
+            </div>
+
+            <!-- Results Screen -->
+            <div id="results-screen" class="screen">
+                <div class="results-hero">
+                    <div class="confetti"></div>
+                    <h1 id="results-title">Great Job!</h1>
+                    <div class="final-score">
+                        <span id="final-score-text">8/10</span>
+                        <div class="score-bar">
+                            <div id="score-fill" class="score-fill"></div>
+                        </div>
+                    </div>
+                    <p id="results-message">You're a Quiz Master! 🏆</p>
+                    <div class="results-actions">
+                        <button id="restart-btn" class="btn-primary">Play Again</button>
+                        <button id="share-btn" class="btn-secondary">Share Score</button>
+                    </div>
+                    <div class="highscore-section">
+                        <h3>High Score: <span id="highscore">0</span></h3>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <script src="../js/main.js"></script>
+    <script src="../js/quiz.js"></script>
+    <script src="../data/quizData.js"></script>
+</body>
+</html>

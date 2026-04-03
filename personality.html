@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Personality Test - MindPlay</title>
+    <link rel="stylesheet" href="../css/style.css">
+    <link rel="stylesheet" href="../css/personality.css">
+</head>
+<body>
+
+    <nav class="navbar">
+        <div class="nav-brand">
+            <span>MindPlay 🧠</span>
+        </div>
+        <div class="nav-links">
+            <a href="../index.html" class="nav-link">Home</a>
+            <a href="../about.html" class="nav-link">About</a>
+            <a href="quiz.html" class="nav-link">Quiz</a>
+            <a href="personality.html" class="nav-link active">Personality</a>
+            <a href="calculator.html" class="nav-link">Calculator</a>
+        </div>
+    </nav>
+    <main>
+        <div id="personality-app">
+            <!-- Welcome Screen -->
+            <div id="welcome-screen" class="screen active">
+                <div class="welcome-hero">
+                    <h1 class="personality-title">Discover Your Personality Type</h1>
+                    <p class="welcome-subtitle">Take our 24-question test to uncover your 16 MBTI personality type</p>
+                    <div class="stats-grid">
+                        <div class="stat-card">
+                            <h3>16 Types</h3>
+                            <p>MBTI Framework</p>
+                        </div>
+                        <div class="stat-card">
+                            <h3>24 Questions</h3>
+                            <p>Scientifically validated</p>
+                        </div>
+                        <div class="stat-card">
+                            <h3>5 Minutes</h3>
+                            <p>Quick & accurate</p>
+                        </div>
+                    </div>
+                    <div class="start-section">
+                        <button id="start-test-btn" class="btn-primary btn-large">Start Personality Test</button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Questions Screen -->
+            <div id="questions-screen" class="screen">
+                <div class="question-header">
+                    <div class="progress-info">
+                        <span id="question-counter">Q1/24</span>
+                        <span id="dimension-display">Extraversion/Introversion</span>
+                    </div>
+                </div>
+                <div id="question-container" class="question-card">
+                    <!-- Questions loaded by JS -->
+                </div>
+            </div>
+
+            <!-- Results Screen -->
+            <div id="results-screen" class="screen">
+                <div class="results-hero">
+                    <div class="personality-card" id="personality-card">
+                        <!-- Personality results loaded by JS -->
+                    </div>
+                    <div class="results-actions">
+                        <button id="retake-btn" class="btn-primary">Retake Test</button>
+                        <button id="share-result-btn" class="btn-secondary">Share Results</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <script src="../js/main.js"></script>
+    <script src="../js/personality.js"></script>
+    <script src="../data/personalityData.js"></script>
+</body>
+</html>
