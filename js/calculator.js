@@ -13,12 +13,58 @@ document.addEventListener('DOMContentLoaded', function() {
     loadTab(currentTab);
     updateHistory();
     setupKeyboard();
-    
-    // Currency setup
     setupCurrency();
 });
 
-function loadTab(tab) {\n    currentTab = tab;\n    document.querySelectorAll('.tab-btn').forEach(btn => btn.classList.remove('active'));\n    event.target.classList.add('active');\n    \n    const container = document.getElementById('calculator-container');\n    let html = '';\n    \n    if (tab === 'basic') {\n        html = `\n            <input type="text" class="display" id="display" readonly value="${display}">\n            <div class="memory-row">\n                <button class="btn btn-memory" onclick="memoryStore()">MS</button>\n                <button class="btn btn-memory" onclick="memoryRecall()">MR</button>\n                <button class="btn btn-memory" onclick="memoryAdd()">M+</button>\n                <button class="btn btn-memory" onclick="memorySubtract()">M-</button>\n                <button class="btn btn-clear" onclick="clearDisplay()">AC</button>\n            </div>\n            <div class="buttons-grid">\n                ${basicButtons()}\n            </div>\n        `;\n    } else if (tab === 'scientific') {\n        html = `\n            <input type="text" class="display" id="display" readonly value="${display}">\n            <div class="memory-row">\n                <button class="btn btn-memory" onclick="memoryStore()">MS</button>\n                <button class="btn btn-memory" onclick="memoryRecall()">MR</button>\n                <button class="btn btn-memory" onclick="memoryAdd()">M+</button>\n                <button class="btn btn-memory" onclick="memorySubtract()">M-</button>\n                <button class="btn btn-clear" onclick="clearDisplay()">AC</button>\n            </div>\n            <div class="buttons-grid">\n                ${scientificButtons()}\n            </div>\n        `;\n    } else if (tab === 'converter') {\n        html = converterHTML();\n    }\n    \n    container.innerHTML = html;\n    if (tab !== 'converter') updateDisplay();\n    updateHistory();\n}
+function loadTab(tab) {
+    currentTab = tab;
+    document.querySelectorAll('.tab-btn').forEach(btn => btn.classList.remove('active'));
+    const activeBtn = document.querySelector('[onclick="switchTab(\'' + tab + '\')"]');
+    if (activeBtn) activeBtn.classList.add('active');
+    
+    const container = document.getElementById('calculator-container');
+    let html = '';
+    
+    if (tab === 'basic') {
+        html = `
+            <input type="text" class="display" id="display" readonly value="${display}">
+            <div class="memory-row">
+                <button class="btn btn-memory" onclick="memoryStore()">MS</button>
+                <button class="btn btn-memory" onclick="memoryRecall()">MR</button>
+                <button class="btn btn-memory" onclick="memoryAdd()">M+</button>
+                <button class="btn btn-memory" onclick="memorySubtract()">M-</button>
+                <button class="btn btn-clear" onclick="clearDisplay()">AC</button>
+            </div>
+            <div class="buttons-grid">
+                ${basicButtons()}
+            </div>
+        `;
+    } else if (tab === 'scientific') {
+        html = `
+            <input type="text" class="display" id="display" readonly value="${display}">
+            <div class="memory-row">
+                <button class="btn btn-memory" onclick="memoryStore()">MS</button>
+                <button class="btn btn-memory" onclick="memoryRecall()">MR</button>
+                <button class="btn btn-memory" onclick="memoryAdd()">M+</button>
+                <button class="btn btn-memory" onclick="memorySubtract()">M-</button>
+                <button class="btn btn-clear" onclick="clearDisplay()">AC</button>
+            </div>
+            <div class="buttons-grid">
+                ${scientificButtons()}
+            </div>
+        `;
+    } else if (tab === 'converter') {
+        html = converterHTML();
+    }
+    
+    container.innerHTML = html;
+    if (tab !== 'converter') updateDisplay();
+    updateHistory();
+}
+
+function switchTab(tab) {
+    loadTab(tab);
+}
 
 function basicButtons() {
     return `
@@ -79,7 +125,35 @@ function scientificButtons() {
     `;
 }
 
-function switchTab(tab) {\n    loadTab(tab);\n}\n\n// Currency rates (static, approx current)\nconst currencyRates = {\n  USD: {EUR: 0.92, GBP: 0.79, INR: 83.50, JPY: 150.20, CAD: 1.37, AUD: 1.50, CHF: 0.88, CNY: 7.25, RUB: 92.50, MXN: 19.80},\n  EUR: {USD: 1.09, GBP: 0.86, INR: 91.00, JPY: 163.50, CAD: 1.49, AUD: 1.63, CHF: 0.96, CNY: 7.90, RUB: 100.70, MXN: 21.55},\n  // Add more as needed\n};\n\nconst currencies = ['USD', 'EUR', 'GBP', 'INR', 'JPY', 'CAD', 'AUD', 'CHF', 'CNY', 'RUB', 'MXN'];\n\nlet fromCurrency = 'USD';\nlet toCurrency = 'EUR';\n\n// Converter tab HTML\nfunction converterHTML() {\n    return `\n        <div class="converter-container">\n            <input type="number" id="currency-amount" placeholder="1.00" min="0" step="0.01" class="currency-input">\n            <div class="currency-swap">\n                <select id="from-currency" class="currency-select">${currencies.map(c => `<option value="${c}" ${c === fromCurrency ? 'selected' : ''}>${c}</option>`).join('')}</select>\n                <button onclick="swapCurrencies()" class="swap-btn">↔</button>\n                <select id="to-currency" class="currency-select">${currencies.map(c => `<option value="${c}" ${c === toCurrency ? 'selected' : ''}>${c}</option>`).join('')}</select>\n            </div>\n            <div id="currency-result" class="currency-result"></div>\n            <div class="converter-buttons">\n                <button onclick="convertCurrency()" class="btn-primary">Convert</button>\n                <button onclick="fetchLiveRates()" class="btn-secondary">Live Rates</button>\n            </div>\n            <div id="rate-info" class="rate-info">Rates as of last update (static)</div>\n        </div>\n    `;\n}\n\nfunction loadTab(tab) {\n    currentTab = tab;\n    document.querySelectorAll('.tab-btn').forEach(btn => btn.classList.remove('active'));\n    event.target.classList.add('active');\n    \n    const container = document.getElementById('calculator-container');\n    let html = '';\n    \n    if (tab === 'basic') {\n        html = `\n            <input type="text" class="display" id="display" readonly value="${display}">\n            <div class="memory-row">\n                <button class="btn btn-memory" onclick="memoryStore()">MS</button>\n                <button class="btn btn-memory" onclick="memoryRecall()">MR</button>\n                <button class="btn btn-memory" onclick="memoryAdd()">M+</button>\n                <button class="btn btn-memory" onclick="memorySubtract()">M-</button>\n                <button class="btn btn-clear" onclick="clearDisplay()">AC</button>\n            </div>\n            <div class="buttons-grid">\n                ${basicButtons()}\n            </div>\n        `;\n    } else if (tab === 'scientific') {\n        html = `\n            <input type="text" class="display" id="display" readonly value="${display}">\n            <div class="memory-row">\n                <button class="btn btn-memory" onclick="memoryStore()">MS</button>\n                <button class="btn btn-memory" onclick="memoryRecall()">MR</button>\n                <button class="btn btn-memory" onclick="memoryAdd()">M+</button>\n                <button class="btn btn-memory" onclick="memorySubtract()">M-</button>\n                <button class="btn btn-clear" onclick="clearDisplay()">AC</button>\n            </div>\n            <div class="buttons-grid">\n                ${scientificButtons()}\n            </div>\n        `;\n    } else if (tab === 'converter') {\n        html = converterHTML();\n    }\n    \n    container.innerHTML = html;\n    if (tab !== 'converter') updateDisplay();\n    updateHistory();\n}
+// Currency rates (static, approx current)
+const currencyRates = {
+  USD: {EUR: 0.92, GBP: 0.79, INR: 83.50, JPY: 150.20, CAD: 1.37, AUD: 1.50, CHF: 0.88, CNY: 7.25, RUB: 92.50, MXN: 19.80},
+  EUR: {USD: 1.09, GBP: 0.86, INR: 91.00, JPY: 163.50, CAD: 1.49, AUD: 1.63, CHF: 0.96, CNY: 7.90, RUB: 100.70, MXN: 21.55}
+};
+
+const currencies = ['USD', 'EUR', 'GBP', 'INR', 'JPY', 'CAD', 'AUD', 'CHF', 'CNY', 'RUB', 'MXN'];
+
+let fromCurrency = 'USD';
+let toCurrency = 'EUR';
+
+function converterHTML() {
+    return `
+        <div class="converter-container">
+            <input type="number" id="currency-amount" placeholder="1.00" min="0" step="0.01" class="currency-input">
+            <div class="currency-swap">
+                <select id="from-currency" class="currency-select">${currencies.map(c => '<option value="' + c + '"' + (c === fromCurrency ? ' selected' : '') + '>' + c + '</option>').join('')}</select>
+                <button onclick="swapCurrencies()" class="swap-btn">↔</button>
+                <select id="to-currency" class="currency-select">${currencies.map(c => '<option value="' + c + '"' + (c === toCurrency ? ' selected' : '') + '>' + c + '</option>').join('')}</select>
+            </div>
+            <div id="currency-result" class="currency-result"></div>
+            <div class="converter-buttons">
+                <button onclick="convertCurrency()" class="btn-primary">Convert</button>
+                <button onclick="fetchLiveRates()" class="btn-secondary">Live Rates</button>
+            </div>
+            <div id="rate-info" class="rate-info">Rates as of last update (static)</div>
+        </div>
+    `;
+}
 
 // Core Functions
 function updateDisplay() {
@@ -120,7 +194,7 @@ function calculate() {
     
     display = isNaN(result) ? 'Error' : result.toString();
     updateDisplay();
-    addToHistory(`${previousValue} ${operator} ${current} = ${display}`);
+    addToHistory(previousValue + ' ' + operator + ' ' + current + ' = ' + display);
     operator = null;
     waitingForOperand = true;
 }
@@ -158,7 +232,7 @@ function calcFunction(fn) {
     }
     display = isNaN(result) ? 'Error' : result.toString();
     updateDisplay();
-    addToHistory(`${fn}(${num}) = ${display}`);
+    addToHistory(fn + '(' + num + ') = ' + display);
 }
 
 // History
@@ -172,9 +246,9 @@ function addToHistory(entry) {
 function updateHistory() {
     const list = document.getElementById('history-list');
     if (list && history.length) {
-        list.innerHTML = history.slice(0, 10).map((item, i) => 
-            `<div class="history-item" onclick="useHistory(${i})">${item}</div>`
-        ).join('');
+        list.innerHTML = history.slice(0, 10).map(function(item, i) {
+            return '<div class="history-item" onclick="useHistory(' + i + ')">' + item + '</div>';
+        }).join('');
     }
 }
 
@@ -191,10 +265,10 @@ function clearHistory() {
 
 // Keyboard Support
 function setupKeyboard() {
-    document.addEventListener('keydown', (e) => {
+    document.addEventListener('keydown', function(e) {
         if (e.target.tagName === 'INPUT') return;
         
-        const key = e.key;
+        var key = e.key;
         if (key >= '0' && key <= '9' || key === '.') appendToDisplay(key);
         else if (key === '+') setOperator('+');
         else if (key === '-') setOperator('-');
@@ -208,22 +282,38 @@ function setupKeyboard() {
 
 // Converter (integrated)
 function setupCurrency() {
-    const currencies = ['USD','EUR','GBP','INR','JPY'];
-    // Dropdown population moved to HTML for simplicity
+    // Setup is done in converterHTML
 }
 
 function convertCurrency() {
-    const amount = parseFloat(document.getElementById('currency-amount')?.value || 0);
+    var amountInput = document.getElementById('currency-amount');
+    if (!amountInput) return;
+    
+    var amount = parseFloat(amountInput.value) || 0;
     if (!amount || currentTab !== 'converter') return;
     
-    // Mock rates (production: use API)
-    const rates = {USD:{EUR:0.92,GBP:0.79,INR:83.5,JPY:150},EUR:{USD:1.09}};
-    const from = document.getElementById('from-currency')?.value || 'USD';
-    const to = document.getElementById('to-currency')?.value || 'EUR';
+    var rates = {USD:{EUR:0.92,GBP:0.79,INR:83.5,JPY:150},EUR:{USD:1.09}};
+    var fromInput = document.getElementById('from-currency');
+    var toInput = document.getElementById('to-currency');
+    var from = fromInput ? fromInput.value : 'USD';
+    var to = toInput ? toInput.value : 'EUR';
     
-    const rate = rates[from]?.[to] || 1;
-    const result = (amount * rate).toFixed(4);
-    document.getElementById('currency-result').textContent = `${amount} ${from} = ${result} ${to}`;
-    addToHistory(`Convert: ${amount} ${from} → ${result} ${to}`);
+    var rate = (rates[from] && rates[from][to]) ? rates[from][to] : 1;
+    var result = (amount * rate).toFixed(4);
+    
+    var resultEl = document.getElementById('currency-result');
+    if (resultEl) resultEl.textContent = amount + ' ' + from + ' = ' + result + ' ' + to;
+    addToHistory('Convert: ' + amount + ' ' + from + ' → ' + result + ' ' + to);
 }
 
+function swapCurrencies() {
+    var temp = fromCurrency;
+    fromCurrency = toCurrency;
+    toCurrency = temp;
+    loadTab('converter');
+}
+
+function fetchLiveRates() {
+    var rateInfo = document.getElementById('rate-info');
+    if (rateInfo) rateInfo.textContent = 'Using static rates (API not configured)';
+}
