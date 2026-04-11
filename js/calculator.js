@@ -18,34 +18,7 @@ document.addEventListener('DOMContentLoaded', function() {
     setupCurrency();
 });
 
-function loadTab(tab) {
-    currentTab = tab;
-    document.querySelectorAll('.tab-btn').forEach(btn => btn.classList.remove('active'));
-    event.target.classList.add('active');
-    
-    const container = document.getElementById('calculator-container');
-    let html = `
-        <input type="text" class="display" id="display" readonly value="${display}">
-        <div class="memory-row">
-            <button class="btn btn-memory" onclick="memoryStore()">MS</button>
-            <button class="btn btn-memory" onclick="memoryRecall()">MR</button>
-            <button class="btn btn-memory" onclick="memoryAdd()">M+</button>
-            <button class="btn btn-memory" onclick="memorySubtract()">M-</button>
-            <button class="btn btn-clear" onclick="clearDisplay()">AC</button>
-        </div>
-        <div class="buttons-grid">
-    `;
-    
-    if (tab === 'basic') {
-        html += basicButtons();
-    } else if (tab === 'scientific') {
-        html += scientificButtons();
-    }
-    
-    html += `</div>`;
-    container.innerHTML = html;
-    updateDisplay();
-}
+function loadTab(tab) {\n    currentTab = tab;\n    document.querySelectorAll('.tab-btn').forEach(btn => btn.classList.remove('active'));\n    event.target.classList.add('active');\n    \n    const container = document.getElementById('calculator-container');\n    let html = '';\n    \n    if (tab === 'basic') {\n        html = `\n            <input type="text" class="display" id="display" readonly value="${display}">\n            <div class="memory-row">\n                <button class="btn btn-memory" onclick="memoryStore()">MS</button>\n                <button class="btn btn-memory" onclick="memoryRecall()">MR</button>\n                <button class="btn btn-memory" onclick="memoryAdd()">M+</button>\n                <button class="btn btn-memory" onclick="memorySubtract()">M-</button>\n                <button class="btn btn-clear" onclick="clearDisplay()">AC</button>\n            </div>\n            <div class="buttons-grid">\n                ${basicButtons()}\n            </div>\n        `;\n    } else if (tab === 'scientific') {\n        html = `\n            <input type="text" class="display" id="display" readonly value="${display}">\n            <div class="memory-row">\n                <button class="btn btn-memory" onclick="memoryStore()">MS</button>\n                <button class="btn btn-memory" onclick="memoryRecall()">MR</button>\n                <button class="btn btn-memory" onclick="memoryAdd()">M+</button>\n                <button class="btn btn-memory" onclick="memorySubtract()">M-</button>\n                <button class="btn btn-clear" onclick="clearDisplay()">AC</button>\n            </div>\n            <div class="buttons-grid">\n                ${scientificButtons()}\n            </div>\n        `;\n    } else if (tab === 'converter') {\n        html = converterHTML();\n    }\n    \n    container.innerHTML = html;\n    if (tab !== 'converter') updateDisplay();\n    updateHistory();\n}
 
 function basicButtons() {
     return `
@@ -106,9 +79,7 @@ function scientificButtons() {
     `;
 }
 
-function switchTab(tab) {
-    loadTab(tab);
-}
+function switchTab(tab) {\n    loadTab(tab);\n}\n\n// Currency rates (static, approx current)\nconst currencyRates = {\n  USD: {EUR: 0.92, GBP: 0.79, INR: 83.50, JPY: 150.20, CAD: 1.37, AUD: 1.50, CHF: 0.88, CNY: 7.25, RUB: 92.50, MXN: 19.80},\n  EUR: {USD: 1.09, GBP: 0.86, INR: 91.00, JPY: 163.50, CAD: 1.49, AUD: 1.63, CHF: 0.96, CNY: 7.90, RUB: 100.70, MXN: 21.55},\n  // Add more as needed\n};\n\nconst currencies = ['USD', 'EUR', 'GBP', 'INR', 'JPY', 'CAD', 'AUD', 'CHF', 'CNY', 'RUB', 'MXN'];\n\nlet fromCurrency = 'USD';\nlet toCurrency = 'EUR';\n\n// Converter tab HTML\nfunction converterHTML() {\n    return `\n        <div class="converter-container">\n            <input type="number" id="currency-amount" placeholder="1.00" min="0" step="0.01" class="currency-input">\n            <div class="currency-swap">\n                <select id="from-currency" class="currency-select">${currencies.map(c => `<option value="${c}" ${c === fromCurrency ? 'selected' : ''}>${c}</option>`).join('')}</select>\n                <button onclick="swapCurrencies()" class="swap-btn">↔</button>\n                <select id="to-currency" class="currency-select">${currencies.map(c => `<option value="${c}" ${c === toCurrency ? 'selected' : ''}>${c}</option>`).join('')}</select>\n            </div>\n            <div id="currency-result" class="currency-result"></div>\n            <div class="converter-buttons">\n                <button onclick="convertCurrency()" class="btn-primary">Convert</button>\n                <button onclick="fetchLiveRates()" class="btn-secondary">Live Rates</button>\n            </div>\n            <div id="rate-info" class="rate-info">Rates as of last update (static)</div>\n        </div>\n    `;\n}\n\nfunction loadTab(tab) {\n    currentTab = tab;\n    document.querySelectorAll('.tab-btn').forEach(btn => btn.classList.remove('active'));\n    event.target.classList.add('active');\n    \n    const container = document.getElementById('calculator-container');\n    let html = '';\n    \n    if (tab === 'basic') {\n        html = `\n            <input type="text" class="display" id="display" readonly value="${display}">\n            <div class="memory-row">\n                <button class="btn btn-memory" onclick="memoryStore()">MS</button>\n                <button class="btn btn-memory" onclick="memoryRecall()">MR</button>\n                <button class="btn btn-memory" onclick="memoryAdd()">M+</button>\n                <button class="btn btn-memory" onclick="memorySubtract()">M-</button>\n                <button class="btn btn-clear" onclick="clearDisplay()">AC</button>\n            </div>\n            <div class="buttons-grid">\n                ${basicButtons()}\n            </div>\n        `;\n    } else if (tab === 'scientific') {\n        html = `\n            <input type="text" class="display" id="display" readonly value="${display}">\n            <div class="memory-row">\n                <button class="btn btn-memory" onclick="memoryStore()">MS</button>\n                <button class="btn btn-memory" onclick="memoryRecall()">MR</button>\n                <button class="btn btn-memory" onclick="memoryAdd()">M+</button>\n                <button class="btn btn-memory" onclick="memorySubtract()">M-</button>\n                <button class="btn btn-clear" onclick="clearDisplay()">AC</button>\n            </div>\n            <div class="buttons-grid">\n                ${scientificButtons()}\n            </div>\n        `;\n    } else if (tab === 'converter') {\n        html = converterHTML();\n    }\n    \n    container.innerHTML = html;\n    if (tab !== 'converter') updateDisplay();\n    updateHistory();\n}
 
 // Core Functions
 function updateDisplay() {

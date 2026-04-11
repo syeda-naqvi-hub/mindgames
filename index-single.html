@@ -1,0 +1,1016 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>MindPlay - Interactive Quizzes & Tools</title>
+    <meta name="description" content="Discover your personality, test your knowledge, and calculate with ease. Interactive web app with quizzes, tests, and calculators.">
+    <meta name="keywords" content="quiz, personality test, calculator, mindplay, interactive, web app">
+    <link rel="icon" type="image/x-icon" href="assets/icons/favicon.ico">
+    <style>
+/* All CSS inlined - style.css + page-specific */
+
+/* Main global styles + Index enhancements */
+* { margin: 0; padding: 0; box-sizing: border-box; }
+body { font-family: 'Arial', sans-serif; line-height: 1.6; color: #333; background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); min-height: 100vh; }
+nav.navbar { position: sticky; top: 0; z-index: 1000; background: rgba(255,255,255,0.15); backdrop-filter: blur(20px); padding: 0.5rem 2rem; display: flex; justify-content: space-between; align-items: center; box-shadow: 0 4px 20px rgba(0,0,0,0.1); transition: all 0.3s ease; }
+.nav-brand { font-size: 1.5rem; font-weight: bold; color: white; text-shadow: 0 2px 10px rgba(0,0,0,0.3); }
+.nav-links { display: flex; gap: 2rem; align-items: center; }
+.nav-link { color: white; text-decoration: none; padding: 0.75rem 1.5rem; border-radius: 25px; font-weight: 500; transition: all 0.3s ease; cursor: pointer; }
+.nav-link.active { background: rgba(255,255,255,0.2); }
+.nav-link:hover { background: rgba(255,255,255,0.2); transform: translateY(-2px); box-shadow: 0 5px 15px rgba(0,0,0,0.2); }
+main { padding: 2rem; }
+.page-section { display: none; }
+.page-section.active { display: block; animation: fadeInUp 0.5s ease; }
+@keyframes fadeInUp { from { opacity: 0; transform: translateY(30px); } to { opacity: 1; transform: translateY(0); } }
+.hero { text-align: center; padding: 4rem 2rem; color: rgb(243, 242, 242); }
+.hero-title { font-size: clamp(3.5rem, 9vw, 7rem); margin-bottom: 1.5rem; background: linear-gradient(135deg, #fff 0%, #f0f0f0 50%, #667eea 100%); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text; font-weight: 900; animation: glowPulse 2s ease-in-out infinite alternate; }
+@keyframes glowPulse { 0% { filter: drop-shadow(0 0 20px rgba(102,126,234,0.5)); } 100% { filter: drop-shadow(0 0 40px rgba(102,126,234,0.8)); } }
+.hero-subtitle { font-size: 1.5rem; max-width: 600px; margin: 0 auto 2rem; opacity: 0.9; }
+.hero-buttons { display: flex; gap: 1rem; justify-content: center; flex-wrap: wrap; }
+.btn-primary, .btn-secondary { padding: 1rem 2rem; border-radius: 50px; text-decoration: none; font-weight: bold; transition: all 0.3s ease; display: inline-block; cursor: pointer; border: none; }
+.btn-primary { background: linear-gradient(45deg, #667eea, #764ba2); color: white; box-shadow: 0 10px 30px rgba(102,126,234,0.4); }
+.btn-primary:hover { transform: translateY(-3px); box-shadow: 0 20px 40px rgba(102,126,234,0.6); }
+.btn-secondary { background: rgba(255,255,255,0.2); color: white; backdrop-filter: blur(10px); border: 2px solid rgba(255,255,255,0.3); }
+.btn-secondary:hover { background: rgba(255,255,255,0.3); transform: translateY(-2px); }
+.btn-large { padding: 1.2rem 3rem; font-size: 1.2rem; }
+.features { padding: 4rem 2rem; max-width: 1200px; margin: 0 auto; background: rgba(255,255,255,0.95); border-radius: 20px; box-shadow: 0 20px 40px rgba(0,0,0,0.1); }
+.features h2 { text-align: center; font-size: 2.5rem; margin-bottom: 3rem; color: #4a5568; }
+.features-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 2rem; }
+.feature-card { background: white; padding: 2.5rem 2rem; border-radius: 20px; text-align: center; box-shadow: 0 20px 40px rgba(0,0,0,0.1); transition: all 0.3s ease; }
+.feature-card:hover { transform: translateY(-10px); box-shadow: 0 30px 60px rgba(0,0,0,0.15); }
+.feature-icon { font-size: 4rem; margin-bottom: 1rem; }
+.feature-card h3 { font-size: 1.8rem; margin-bottom: 1rem; color: #4a5568; }
+.feature-link { color: #667eea; text-decoration: none; font-weight: bold; margin-top: 1rem; display: inline-block; }
+.feature-link:hover { color: #764ba2; }
+.stats { background: linear-gradient(135deg, #667eea, #764ba2); color: white; padding: 3rem 2rem; }
+.stats-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); gap: 2rem; max-width: 800px; margin: 0 auto; text-align: center; }
+.stat-item { text-align: center; }
+.stat-number { display: block; font-size: 3rem; font-weight: bold; text-shadow: 0 5px 15px rgba(0,0,0,0.3); }
+.stat-label { font-size: 1.1rem; opacity: 0.9; }
+.cta { text-align: center; padding: 4rem 2rem; background: rgba(255,255,255,0.95); border-radius: 20px; box-shadow: 0 20px 40px rgba(0,0,0,0.1); margin: 2rem; }
+.cta h2 { font-size: 2.5rem; margin-bottom: 1rem; color: #4a5568; }
+.cta p { font-size: 1.3rem; margin-bottom: 2rem; color: #718096; }
+/* About styles */
+.about-hero { text-align: center; padding: 5rem 2rem; color: white; }
+.mission { padding: 4rem 2rem; background: rgba(255,255,255,0.95); margin: 2rem; border-radius: 20px; box-shadow: 0 20px 40px rgba(0,0,0,0.1); }
+.mission h2 { text-align: center; font-size: 2.5rem; margin-bottom: 2rem; color: #4a5568; }
+.mission-content { max-width: 800px; margin: 0 auto; text-align: center; font-size: 1.2rem; line-height: 1.8; }
+.mission ul { list-style: none; margin-top: 2rem; display: grid; gap: 1rem; }
+.mission li { background: linear-gradient(135deg, #667eea, #764ba2); color: white; padding: 1rem 1.5rem; border-radius: 15px; font-weight: 500; box-shadow: 0 10px 30px rgba(102,126,234,0.3); }
+.timeline { padding: 4rem 2rem; max-width: 1000px; margin: 0 auto; background: rgba(255,255,255,0.95); border-radius: 20px; box-shadow: 0 20px 40px rgba(0,0,0,0.1); }
+.timeline h2 { text-align: center; font-size: 2.5rem; margin-bottom: 4rem; color: #4a5568; }
+.timeline-container { position: relative; padding-left: 2rem; }
+.timeline-container::before { content: ''; position: absolute; left: 1rem; top: 0; bottom: 0; width: 4px; background: linear-gradient(to bottom, #667eea, #764ba2); border-radius: 2px; }
+.timeline-item { position: relative; margin-bottom: 3rem; padding-left: 3rem; }
+.timeline-dot { position: absolute; left: -1rem; top: 0.5rem; width: 20px; height: 20px; background: linear-gradient(135deg, #667eea, #764ba2); border-radius: 50%; box-shadow: 0 0 0 4px rgba(102,126,234,0.3); }
+.timeline-content h3 { font-size: 1.5rem; color: #4a5568; margin-bottom: 0.5rem; }
+.timeline-content p { color: #718096; font-size: 1.1rem; }
+.container { max-width: 1200px; margin: 0 auto; }
+/* Quiz CSS */
+.screen { display: none; width: 100%; max-width: 800px; min-height: 80vh; margin: 2rem auto; }
+.screen.active { display: block; animation: fadeIn 0.5s ease; }
+@keyframes fadeIn { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } }
+.welcome-hero { text-align: center; padding: 3rem 2rem; }
+.quiz-title { font-size: clamp(3rem, 8vw, 5rem); background: linear-gradient(135deg, #667eea, #764ba2); -webkit-background-clip: text; -webkit-text-fill-color: transparent; margin-bottom: 1rem; animation: glowPulse 2s ease-in-out infinite alternate; }
+.quiz-subtitle { font-size: 1.4rem; color: #64748b; margin-bottom: 3rem; max-width: 500px; margin-left: auto; margin-right: auto; }
+.category-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 1.5rem; margin-bottom: 3rem; }
+.category-card { background: linear-gradient(135deg, rgba(255,255,255,0.95), rgba(255,255,255,0.9)); border-radius: 20px; padding: 2rem; text-align: center; cursor: pointer; transition: all 0.3s ease; border: 2px solid transparent; box-shadow: 0 10px 30px rgba(0,0,0,0.1); }
+.category-card:hover { transform: translateY(-10px); box-shadow: 0 20px 40px rgba(0,0,0,0.2); border-color: #667eea; }
+.category-icon { font-size: 4rem; margin-bottom: 1rem; }
+.quick-play { text-align: center; }
+.quiz-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 2rem; padding: 1rem; background: rgba(255,255,255,0.1); border-radius: 15px; backdrop-filter: blur(10px); }
+.timer-circle { width: 80px; height: 80px; border-radius: 50%; background: conic-gradient(#667eea var(--timer-percent), #e2e8f0 0); display: flex; align-items: center; justify-content: center; font-size: 1.5rem; font-weight: bold; color: #333; box-shadow: 0 10px 30px rgba(102,126,234,0.4); animation: timerPulse 1s ease-in-out infinite alternate; }
+@keyframes timerPulse { from { box-shadow: 0 10px 30px rgba(102,126,234,0.4); } to { box-shadow: 0 10px 30px rgba(102,126,234,0.6); } }
+.progress-info { display: flex; gap: 2rem; font-weight: bold; color: white; text-shadow: 0 2px 10px rgba(0,0,0,0.5); }
+.question-card { background: linear-gradient(135deg, rgba(255,255,255,0.95), rgba(248,250,252,0.95)); border-radius: 25px; padding: 3rem 2.5rem; text-align: center; box-shadow: 0 25px 50px rgba(0,0,0,0.15); animation: slideInUp 0.6s ease; }
+@keyframes slideInUp { from { opacity: 0; transform: translateY(50px); } to { opacity: 1; transform: translateY(0); } }
+.question-text { font-size: 1.6rem; color: #334155; margin-bottom: 2rem; line-height: 1.6; }
+.options-grid { display: grid; gap: 1.5rem; }
+.option-btn { padding: 1.5rem 2rem; border: 2px solid #e2e8f0; border-radius: 15px; background: white; font-size: 1.1rem; font-weight: 500; cursor: pointer; transition: all 0.3s ease; text-align: left; }
+.option-btn:hover { border-color: #667eea; transform: translateY(-3px); box-shadow: 0 15px 35px rgba(102,126,234,0.2); }
+.option-btn.selected, .option-btn.correct { background: linear-gradient(135deg, #48bb78, #38a169); color: white; border-color: transparent; }
+.option-btn.wrong { background: #f56565; color: white; }
+.results-hero { text-align: center; padding: 4rem 2rem; }
+.confetti { position: absolute; top: 0; left: 0; width: 100%; height: 100%; pointer-events: none; z-index: 1; }
+#final-score-text { font-size: 4rem; font-weight: bold; background: linear-gradient(135deg, #48bb78, #38a169); -webkit-background-clip: text; background-clip: text; -webkit-text-fill-color: transparent; display: block; margin-bottom: 1rem; }
+.score-bar { width: 300px; height: 20px; background: #e2e8f0; border-radius: 10px; margin: 0 auto; overflow: hidden; }
+.score-fill { height: 100%; background: linear-gradient(90deg, #48bb78, #38a169); border-radius: 10px; transition: width 1s ease; }
+.results-actions { display: flex; gap: 1rem; justify-content: center; margin: 3rem 0; flex-wrap: wrap; }
+.highscore-section { margin-top: 2rem; padding: 1.5rem; background: rgba(255,255,255,0.2); border-radius: 15px; backdrop-filter: blur(10px); }
+/* Personality CSS */
+#personality-app .screen { padding: 2rem; }
+.personality-title { font-size: clamp(2.5rem, 7vw, 4.5rem); background: linear-gradient(135deg, #667eea, #764ba2, #f0932b); -webkit-background-clip: text; -webkit-text-fill-color: transparent; text-align: center; margin-bottom: 1.5rem; animation: titleGlow 2s ease-in-out infinite alternate; }
+@keyframes titleGlow { from { filter: drop-shadow(0 0 10px rgba(102,126,234,0.5)); } to { filter: drop-shadow(0 0 20px rgba(240,147,43,0.8)); } }
+.welcome-subtitle { font-size: 1.4rem; color: #64748b; text-align: center; max-width: 600px; margin: 0 auto 3rem; line-height: 1.6; }
+.personality-stats-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 2rem; margin-bottom: 4rem; }
+.stat-card { background: rgba(255,255,255,0.9); padding: 2rem 1.5rem; border-radius: 20px; text-align: center; box-shadow: 0 15px 35px rgba(0,0,0,0.1); transition: transform 0.3s ease; }
+.stat-card:hover { transform: translateY(-8px); }
+.stat-card h3 { font-size: 2.5rem; color: #667eea; margin-bottom: 0.5rem; }
+.question-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 2.5rem; padding: 1.5rem; background: rgba(255,255,255,0.1); border-radius: 15px; backdrop-filter: blur(15px); }
+.personality-progress-info { display: flex; gap: 1.5rem; font-weight: bold; color: white; font-size: 1.1rem; }
+.progress-info { display: flex; gap: 1.5rem; font-weight: bold; color: white; font-size: 1.1rem; }
+#dimension-display { background: rgba(255,255,255,0.2); padding: 0.5rem 1.5rem; border-radius: 25px; }
+.scale-container { display: flex; justify-content: space-between; align-items: center; max-width: 600px; margin: 0 auto; gap: 1rem; }
+.scale-label { font-size: 1.1rem; font-weight: 600; color: #475569; min-width: 120px; text-align: center; }
+.scale-btn { flex: 1; padding: 1.5rem 1rem; border: 3px solid #e2e8f0; border-radius: 15px; background: white; font-size: 1.3rem; font-weight: 600; cursor: pointer; transition: all 0.3s ease; margin: 0 0.25rem; }
+.scale-btn:hover { border-color: #667eea; transform: translateY(-2px); box-shadow: 0 10px 25px rgba(102,126,234,0.2); }
+.scale-btn.selected { background: linear-gradient(135deg, #667eea, #764ba2); color: white; border-color: transparent; transform: scale(1.05); }
+.personality-card { background: linear-gradient(135deg, rgba(255,255,255,0.1), rgba(255,255,255,0.05)); backdrop-filter: blur(20px); border-radius: 30px; padding: 4rem; border: 1px solid rgba(255,255,255,0.2); box-shadow: 0 40px 80px rgba(0,0,0,0.2); margin-bottom: 3rem; }
+.personality-code { font-size: 6rem; font-weight: 900; background: linear-gradient(135deg, #667eea, #764ba2); -webkit-background-clip: text; -webkit-text-fill-color: transparent; text-align: center; margin-bottom: 1rem; }
+.personality-name { font-size: 2.5rem; color: white; text-align: center; margin-bottom: 2rem; font-weight: 700; }
+.personality-description { font-size: 1.25rem; line-height: 1.7; color: #e2e8f0; margin-bottom: 3rem; text-align: center; max-width: 700px; margin-left: auto; margin-right: auto; }
+.traits-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 1.5rem; margin-bottom: 2.5rem; }
+.trait-badge { background: rgba(255,255,255,0.15); padding: 1rem 1.5rem; border-radius: 25px; text-align: center; backdrop-filter: blur(10px); border: 1px solid rgba(255,255,255,0.2); }
+.trait-badge strong { display: block; color: white; font-size: 1.1rem; }
+.career-list { background: rgba(255,255,255,0.1); border-radius: 20px; padding: 2rem; margin-bottom: 2rem; }
+.career-list h4 { color: white; margin-bottom: 1rem; font-size: 1.3rem; }
+.career-list ul { list-style: none; display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 0.5rem; }
+.career-list li { background: rgba(255,255,255,0.1); padding: 0.75rem 1rem; border-radius: 10px; color: #e2e8f0; }
+.score-breakdown { display: grid; grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); gap: 1.5rem; margin-bottom: 2rem; }
+.dimension-score { text-align: center; padding: 1.5rem; background: rgba(255,255,255,0.1); border-radius: 20px; backdrop-filter: blur(10px); }
+.dimension-label { font-size: 0.9rem; color: #cbd5e1; margin-bottom: 0.5rem; text-transform: uppercase; letter-spacing: 1px; }
+.dimension-bar { height: 8px; background: rgba(255,255,255,0.2); border-radius: 4px; overflow: hidden; margin-bottom: 0.5rem; }
+.dimension-fill { height: 100%; background: linear-gradient(90deg, #667eea, #764ba2); border-radius: 4px; transition: width 1s ease; }
+.dimension-value { font-weight: bold; color: white; font-size: 1.1rem; }
+.start-section { text-align: center; }
+/* Calculator CSS */
+.calculator-hero { text-align: center; padding: 2rem 0; color: white; }
+.calculator-hero h1 { font-size: 3rem; background: linear-gradient(135deg, #667eea, #764ba2); -webkit-background-clip: text; -webkit-text-fill-color: transparent; margin-bottom: 1rem; }
+.calc-tabs { display: flex; justify-content: center; gap: 1rem; margin: 2rem 0; flex-wrap: wrap; }
+.tab-btn { padding: 0.8rem 2rem; border: none; background: rgba(255,255,255,0.2); color: white; border-radius: 25px; cursor: pointer; backdrop-filter: blur(10px); transition: all 0.3s ease; }
+.tab-btn.active, .tab-btn:hover { background: linear-gradient(135deg, #667eea, #764ba2); transform: translateY(-2px); box-shadow: 0 10px 25px rgba(102,126,234,0.4); }
+#calculator-container { max-width: 500px; margin: 0 auto 2rem; background: rgba(255,255,255,0.1); backdrop-filter: blur(20px); border-radius: 30px; padding: 2.5rem; box-shadow: 0 30px 60px rgba(0,0,0,0.3); border: 1px solid rgba(255,255,255,0.2); }
+.display { width: 100%; height: 90px; font-size: 2.8rem; text-align: right; padding: 1.5rem; margin-bottom: 1.5rem; border: none; border-radius: 20px; background: rgba(255,255,255,0.15); color: white; backdrop-filter: blur(15px); box-shadow: inset 0 5px 15px rgba(0,0,0,0.2); }
+.buttons-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 1.2rem; }
+.btn { aspect-ratio: 1; font-size: 1.4rem; font-weight: 600; border: none; border-radius: 20px; cursor: pointer; transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1); box-shadow: 0 8px 20px rgba(0,0,0,0.2); position: relative; overflow: hidden; }
+.btn-number { background: linear-gradient(135deg, rgba(255,255,255,0.3), rgba(255,255,255,0.1)); color: #4a5568; }
+.btn-operator { background: linear-gradient(135deg, #f0932b, #eb4d4b); color: white; }
+.btn-function { background: linear-gradient(135deg, #667eea, #764ba2); color: white; }
+.btn-equals { background: linear-gradient(135deg, #00b894, #00cec9); color: white; }
+.btn-memory { background: linear-gradient(135deg, #fdcb6e, #e17055); color: white; }
+.btn-clear { background: linear-gradient(135deg, #e17055, #d63031); color: white; }
+.btn:active { transform: scale(0.95); box-shadow: 0 4px 10px rgba(0,0,0,0.3); }
+.history-panel { max-width: 500px; margin: 2rem auto; background: rgba(255,255,255,0.1); backdrop-filter: blur(20px); border-radius: 20px; padding: 2rem; border: 1px solid rgba(255,255,255,0.2); }
+#history-list { max-height: 200px; overflow-y: auto; margin: 1rem 0; color: white; }
+.history-item { padding: 0.5rem; margin-bottom: 0.5rem; background: rgba(255,255,255,0.1); border-radius: 10px; cursor: pointer; transition: background 0.2s; }
+.history-item:hover { background: rgba(255,255,255,0.2); }
+/* Responsive */
+@media (max-width: 768px) { .nav-links { gap: 1rem; } .hero-buttons { flex-direction: column; } .features-grid { grid-template-columns: 1fr; } .buttons-grid { grid-template-columns: repeat(4, 1fr); } }
+@media (prefers-color-scheme: dark) { body { background: #1a202c; color: #e2e8f0; } main .page-section { background: rgba(26,32,44,0.95); } }
+.tab-content { display: none; } .tab-content.active { display: block; }
+    </style>
+</head>
+<body>
+    <nav class="navbar">
+        <div class="nav-brand">
+            <span>MindPlay 🧠</span>
+        </div>
+        <div class="nav-links">
+            <a class="nav-link active" data-target="home">Home</a>
+            <a class="nav-link" data-target="about">About</a>
+            <a class="nav-link" data-target="quiz">Quiz</a>
+            <a class="nav-link" data-target="personality">Personality</a>
+            <a class="nav-link" data-target="calculator">Calculator</a>
+        </div>
+    </nav>
+    <main>
+        <!-- Home Section -->
+        <section id="home" class="page-section active">
+            <section class="hero">
+                <div class="hero-content">
+                    <h1 class="hero-title">MindPlay 🧠</h1>
+                    <p class="hero-subtitle">Discover Your Mind Through Interactive Quizzes, Personality Tests & Smart Tools</p>
+                    <div class="hero-buttons">
+                        <button class="btn-primary" onclick="showSection('quiz')">Start Quiz →</button>
+                        <button class="btn-secondary" onclick="showSection('personality')">Test Personality</button>
+                    </div>
+                </div>
+            </section>
+            <section class="features">
+                <h2>Explore Our Features</h2>
+                <div class="features-grid">
+                    <div class="feature-card">
+                        <div class="feature-icon">🧠</div>
+                        <h3>Interactive Quiz</h3>
+                        <p>Test your knowledge with engaging multiple-choice questions and get instant scores.</p>
+                        <button class="feature-link btn-primary" onclick="showSection('quiz')">Take Quiz →</button>
+                    </div>
+                    <div class="feature-card">
+                        <div class="feature-icon">✨</div>
+                        <h3>Personality Test</h3>
+                        <p>Discover your personality type through scientifically-inspired 1-5 scale assessment.</p>
+                        <button class="feature-link btn-primary" onclick="showSection('personality')">Start Test →</button>
+                    </div>
+                    <div class="feature-card">
+                        <div class="feature-icon">⚡</div>
+                        <h3>Smart Calculator</h3>
+                        <p>Advanced calculator with memory, history & converters.</p>
+                        <button class="feature-link btn-primary" onclick="showSection('calculator')">Open Calculator →</button>
+                    </div>
+                </div>
+            </section>
+            <section class="stats">
+                <div class="stats-grid">
+                    <div class="stat-item">
+                        <span class="stat-number">50+</span>
+                        <span class="stat-label">Quiz Questions</span>
+                    </div>
+                    <div class="stat-item">
+                        <span class="stat-number">5</span>
+                        <span class="stat-label">Personality Traits</span>
+                    </div>
+                    <div class="stat-item">
+                        <span class="stat-number">Instant</span>
+                        <span class="stat-label">Calculations</span>
+                    </div>
+                </div>
+            </section>
+            <section class="cta">
+                <h2>Ready to Play?</h2>
+                <p>Start your mind journey today!</p>
+                <button class="btn-primary btn-large" onclick="showSection('quiz')">Begin Adventure →</button>
+            </section>
+        </section>
+
+        <!-- About Section -->
+        <section id="about" class="page-section">
+            <section class="about-hero">
+                <div class="hero-content">
+                    <h1 class="hero-title">About MindPlay</h1>
+                    <p class="hero-subtitle">Unlocking Minds Through Interactive Learning Since 2024</p>
+                    <div class="hero-buttons">
+                        <button class="btn-primary" onclick="showSection('quiz')">Try Our Quiz</button>
+                    </div>
+                </div>
+            </section>
+            <section class="mission">
+                <div class="container">
+                    <h2>Our Mission</h2>
+                    <div class="mission-content">
+                        <p>MindPlay is more than just quizzes and tests. We're dedicated to creating engaging experiences that challenge your mind, reveal your personality, and provide practical tools for everyday use.</p>
+                        <ul>
+                            <li>🧠 Interactive learning experiences</li>
+                            <li>✨ Accurate personality insights</li>
+                            <li>⚡ Instant calculation tools</li>
+                            <li>🎯 Fun & educational content</li>
+                        </ul>
+                    </div>
+                </div>
+            </section>
+            <section class="timeline">
+                <h2>Our Journey</h2>
+                <div class="timeline-container">
+                    <div class="timeline-item">
+                        <div class="timeline-dot"></div>
+                        <div class="timeline-content">
+                            <h3>2024</h3>
+                            <p>MindPlay launched with interactive quiz engine</p>
+                        </div>
+                    </div>
+                    <div class="timeline-item">
+                        <div class="timeline-dot"></div>
+                        <div class="timeline-content">
+                            <h3>2024 Q2</h3>
+                            <p>Personality assessment framework added</p>
+                        </div>
+                    </div>
+                    <div class="timeline-item">
+                        <div class="timeline-dot"></div>
+                        <div class="timeline-content">
+                            <h3>2024 Q3</h3>
+                            <p>Smart calculator with currency converter</p>
+                        </div>
+                    </div>
+                    <div class="timeline-item">
+                        <div class="timeline-dot"></div>
+                        <div class="timeline-content">
+                            <h3>Future</h3>
+                            <p>AI-powered adaptive learning & more!</p>
+                        </div>
+                    </div>
+                </div>
+            </section>
+            <section class="cta">
+                <h2>Ready to Discover Your Mind?</h2>
+                <button class="btn-primary btn-large" onclick="showSection('personality')">Take Personality Test →</button>
+            </section>
+        </section>
+
+        <!-- Quiz Section -->
+        <section id="quiz" class="page-section">
+            <div id="quiz-app">
+                <div id="welcome-screen" class="screen active">
+                    <div class="welcome-hero">
+                        <h1 class="quiz-title">Brain Blitz Quiz</h1>
+                        <p class="quiz-subtitle">Test your knowledge across 5 categories!</p>
+                        <div class="category-grid" id="category-grid">
+                            <!-- Dynamic -->
+                        </div>
+                        <div class="quick-play">
+                            <button id="quick-play-btn" class="btn-primary btn-large">Quick Play (10 Questions)</button>
+                        </div>
+                    </div>
+                </div>
+                <div id="quiz-screen" class="screen">
+                    <div class="quiz-header">
+                        <div class="timer-circle" id="timer-circle">
+                            <span id="timer-text">30</span>
+                        </div>
+                        <div class="progress-info">
+                            <span id="question-counter">Q1/10</span>
+                            <span id="score-display">Score: 0</span>
+                        </div>
+                    </div>
+                    <div id="question-container" class="question-card">
+                        <!-- Dynamic -->
+                    </div>
+                </div>
+                <div id="results-screen" class="screen">
+                    <div class="results-hero">
+                        <canvas class="confetti"></canvas>
+                        <h1 id="results-title">Great Job!</h1>
+                        <div class="final-score">
+                            <span id="final-score-text">8/10</span>
+                            <div class="score-bar">
+                                <div id="score-fill" class="score-fill"></div>
+                            </div>
+                        </div>
+                        <p id="results-message">You're a Quiz Master! 🏆</p>
+                        <div class="results-actions">
+                            <button id="restart-btn" class="btn-primary">Play Again</button>
+                            <button id="share-btn" class="btn-secondary">Share Score</button>
+                        </div>
+                        <div class="highscore-section">
+                            <h3>High Score: <span id="highscore">0</span></h3>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Personality Section -->
+        <section id="personality" class="page-section">
+            <div id="personality-app">
+                <div id="welcome-screen" class="screen active">
+                    <div class="welcome-hero">
+                        <h1 class="personality-title">Discover Your Personality Type</h1>
+                        <p class="welcome-subtitle">Take our 24-question test to uncover your 16 MBTI personality type</p>
+                        <div class="personality-stats-grid">
+                            <div class="stat-card">
+                                <h3>16 Types</h3>
+                                <p>MBTI Framework</p>
+                            </div>
+                            <div class="stat-card">
+                                <h3>24 Questions</h3>
+                                <p>Scientifically validated</p>
+                            </div>
+                            <div class="stat-card">
+                                <h3>5 Minutes</h3>
+                                <p>Quick & accurate</p>
+                            </div>
+                        </div>
+                        <div class="start-section">
+                            <button id="start-test-btn" class="btn-primary btn-large">Start Personality Test</button>
+                        </div>
+                    </div>
+                </div>
+                <div id="questions-screen" class="screen">
+                    <div class="question-header">
+                        <div class="progress-info">
+                            <span id="question-counter">Q1/24</span>
+                            <span id="dimension-display">Extraversion/Introversion</span>
+                        </div>
+                    </div>
+                    <div id="question-container" class="question-card">
+                        <!-- Dynamic -->
+                    </div>
+                </div>
+                <div id="results-screen" class="screen">
+                    <div class="results-hero">
+                        <div class="personality-card" id="personality-card">
+                            <!-- Dynamic -->
+                        </div>
+                        <div class="results-actions">
+                            <button id="retake-btn" class="btn-primary">Retake Test</button>
+                            <button id="share-result-btn" class="btn-secondary">Share Results</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Calculator Section -->
+        <section id="calculator" class="page-section">
+            <section class="calculator-hero">
+                <h1><span>⚡</span> Smart Calculator</h1>
+                <p>Advanced calculations with memory, history & tabs</p>
+            </section>
+            <div class="calc-tabs">
+                <button class="tab-btn active" onclick="switchTab('basic')">Basic</button>
+                <button class="tab-btn" onclick="switchTab('scientific')">Scientific</button>
+            </div>
+            <div id="calculator-container">
+                <!-- Dynamic -->
+            </div>
+            <div id="history-panel" class="history-panel">
+                <h3>History</h3>
+                <div id="history-list">No calculations yet</div>
+                <button onclick="clearHistory()" class="btn-clear">Clear All</button>
+            </div>
+        </section>
+    </main>
+    <script>
+/* All JS inlined - main.js + quiz.js + personality.js + calculator.js + data */
+
+// Navigation
+function showSection(target) {
+    document.querySelectorAll('.page-section').forEach(sec => sec.classList.remove('active'));
+    document.getElementById(target).classList.add('active');
+    document.querySelectorAll('.nav-link').forEach(link => link.classList.remove('active'));
+    document.querySelector(`[data-target="${target}"]`).classList.add('active');
+    
+    // Init section if needed
+    if (target === 'quiz') initQuiz();
+    if (target === 'personality') initPersonality();
+    if (target === 'calculator') initCalculator();
+}
+
+// Dark mode
+const darkModeMediaQuery = window.matchMedia('(prefers-color-scheme: dark)');
+darkModeMediaQuery.addListener(isDark => document.body.classList.toggle('dark-mode', isDark.matches));
+document.body.classList.toggle('dark-mode', darkModeMediaQuery.matches);
+
+// Quiz Data + App
+const quizData = {
+    categories: [
+        { id: 'general', name: 'General Knowledge', color: '#ff6b6b' },
+        { id: 'science', name: 'Science', color: '#4ecdc4' },
+        { id: 'history', name: 'History', color: '#45b7d1' },
+        { id: 'geography', name: 'Geography', color: '#f9ca24' },
+        { id: 'sports', name: 'Sports', color: '#6c5ce7' }
+    ],
+    questions: {
+        general: [
+            { question: "What is the capital of France?", options: ["London", "Berlin", "Paris", "Madrid"], correct: 2 },
+            { question: "Who wrote 'Romeo and Juliet'?", options: ["Charles Dickens", "William Shakespeare", "Jane Austen", "Mark Twain"], correct: 1 },
+            { question: "What is the chemical symbol for gold?", options: ["Ag", "Au", "Go", "Gd"], correct: 1 }
+        ],
+        science: [
+            { question: "Which planet is known as the Red Planet?", options: ["Venus", "Mars", "Jupiter", "Saturn"], correct: 1 },
+            { question: "What is H2O commonly known as?", options: ["Milk", "Salt", "Water", "Sugar"], correct: 2 },
+            { question: "Which vitamin is produced by sunlight on skin?", options: ["Vitamin A", "Vitamin B", "Vitamin C", "Vitamin D"], correct: 3 }
+        ],
+        history: [
+            { question: "In what year did World War II end?", options: ["1945", "1939", "1918", "1950"], correct: 0 },
+            { question: "Who was the first President of USA?", options: ["Abraham Lincoln", "Thomas Jefferson", "George Washington", "John Adams"], correct: 2 }
+        ],
+        geography: [
+            { question: "What is the largest ocean on Earth?", options: ["Atlantic", "Indian", "Arctic", "Pacific"], correct: 3 },
+            { question: "Which continent is Egypt in?", options: ["Asia", "Europe", "Africa", "South America"], correct: 2 }
+        ],
+        sports: [
+            { question: "How many players in a soccer team?", options: ["9", "10", "11", "12"], correct: 2 },
+            { question: "What country won 2018 FIFA World Cup?", options: ["Brazil", "Germany", "France", "Argentina"], correct: 2 }
+        ]
+    }
+};
+
+let quizApp = null;
+function initQuiz() {
+    if (quizApp) return;
+    quizApp = new QuizApp();
+    const grid = document.getElementById('category-grid');
+    grid.innerHTML = '';
+    quizData.categories.forEach(cat => {
+        grid.innerHTML += `
+            <div class="category-card" data-category="${cat.id}" style="border-top: 5px solid ${cat.color}">
+                <div class="category-icon" style="color: ${cat.color}">📚</div>
+                <h3>${cat.name}</h3>
+                <p>${Object.keys(quizData.questions[cat.id] || []).length}+ Questions</p>
+            </div>
+        `;
+    });
+}
+
+class QuizApp {
+    constructor() {
+        this.currentQuestion = 0;
+        this.score = 0;
+        this.timer = 30;
+        this.highScore = localStorage.getItem('quizHighScore') || 0;
+        this.questions = [];
+        this.maxQuestions = 10;
+        this.category = null;
+        this.timerInterval = null;
+        this.bindEvents();
+        document.getElementById('highscore').textContent = this.highScore;
+    }
+    bindEvents() {
+        const quickBtn = document.getElementById('quick-play-btn');
+        if (quickBtn) quickBtn.addEventListener('click', () => this.startQuickPlay());
+        const restartBtn = document.getElementById('restart-btn');
+        if (restartBtn) restartBtn.addEventListener('click', () => this.restartQuiz());
+        const shareBtn = document.getElementById('share-btn');
+        if (shareBtn) shareBtn.addEventListener('click', () => this.shareScore());
+        document.body.addEventListener('click', (e) => {
+            if (e.target.classList.contains('category-card')) {
+                this.selectCategory(e.target.dataset.category);
+            }
+        });
+    }
+    startQuickPlay() {
+        this.category = 'all';
+        this.loadQuestions();
+        this.startQuestion();
+    }
+    selectCategory(cat) {
+        this.category = cat;
+        this.loadQuestions();
+        this.startQuestion();
+    }
+    loadQuestions() {
+        this.questions = [];
+        if (this.category === 'all') {
+            Object.keys(quizData.questions).forEach(cat => {
+                this.questions.push(...quizData.questions[cat]);
+            });
+        } else {
+            this.questions = quizData.questions[this.category] || [];
+        }
+        this.questions = this.shuffle(this.questions).slice(0, this.maxQuestions);
+    }
+    startQuestion() {
+        this.currentQuestion = 0;
+        this.score = 0;
+        this.showScreens('quiz-screen');
+        document.getElementById('welcome-screen').classList.remove('active');
+        document.getElementById('quiz-screen').classList.add('active');
+        this.showQuestion();
+        this.startTimer();
+    }
+    showQuestion() {
+        const q = this.questions[this.currentQuestion];
+        if (!q) { this.showResults(); return; }
+        document.getElementById('question-container').innerHTML = `
+            <p class="question-text">${q.question}</p>
+            <div class="options-grid">
+                ${q.options.map((opt, i) => `<button class="option-btn" data-index="${i}">${opt}</button>`).join('')}
+            </div>
+        `;
+        document.querySelectorAll('.option-btn').forEach(btn => {
+            btn.addEventListener('click', (e) => this.selectAnswer(parseInt(e.target.dataset.index)));
+        });
+        this.updateQuestionCounter();
+    }
+    selectAnswer(index) {
+        const q = this.questions[this.currentQuestion];
+        const btns = document.querySelectorAll('.option-btn');
+        btns.forEach((btn, i) => {
+            btn.disabled = true;
+            if (i === q.correct) btn.classList.add('correct');
+            if (i === index && i !== q.correct) btn.classList.add('wrong');
+        });
+        if (index === q.correct) this.score++;
+        this.updateScoreDisplay();
+        setTimeout(() => this.nextQuestion(), 1000);
+    }
+    nextQuestion() {
+        this.currentQuestion++;
+        if (this.currentQuestion >= this.questions.length) {
+            this.stopTimer();
+            this.showResults();
+        } else {
+            this.showQuestion();
+            this.startTimer();
+        }
+    }
+    startTimer() {
+        this.stopTimer();
+        this.timer = 30;
+        this.updateTimerDisplay();
+        this.timerInterval = setInterval(() => {
+            this.timer--;
+            this.updateTimerDisplay();
+            if (this.timer <= 0) {
+                this.stopTimer();
+                this.selectAnswer(-1);
+            }
+        }, 1000);
+    }
+    stopTimer() {
+        if (this.timerInterval) {
+            clearInterval(this.timerInterval);
+            this.timerInterval = null;
+        }
+    }
+    updateTimerDisplay() {
+        const text = document.getElementById('timer-text');
+        const circle = document.getElementById('timer-circle');
+        if (text) text.textContent = this.timer;
+        if (circle) circle.style.setProperty('--timer-percent', `${(this.timer / 30) * 100}%`);
+    }
+    updateScoreDisplay() {
+        const el = document.getElementById('score-display');
+        if (el) el.textContent = `Score: ${this.score}`;
+    }
+    updateQuestionCounter() {
+        const el = document.getElementById('question-counter');
+        if (el) el.textContent = `Q${this.currentQuestion + 1}/${this.questions.length}`;
+    }
+    showResults() {
+        this.showScreens('results-screen');
+        document.getElementById('quiz-screen').classList.remove('active');
+        document.getElementById('results-screen').classList.add('active');
+        document.getElementById('final-score-text').textContent = `${this.score}/${this.questions.length}`;
+        document.getElementById('score-fill').style.width = `${(this.score / this.questions.length) * 100}%`;
+        document.getElementById('results-message').textContent = this.score >= 8 ? "You're a Quiz Master!" : this.score >= 5 ? "Good job!" : "Keep practicing!";
+        this.checkHighScore();
+        this.playConfetti();
+    }
+    checkHighScore() {
+        if (this.score > this.highScore) {
+            this.highScore = this.score;
+            localStorage.setItem('quizHighScore', this.highScore);
+            document.getElementById('highscore').textContent = this.highScore;
+        }
+    }
+    restartQuiz() {
+        this.showScreens('welcome-screen');
+        document.getElementById('results-screen').classList.remove('active');
+        document.getElementById('welcome-screen').classList.add('active');
+    }
+    shareScore() {
+        const text = `I scored ${this.score}/${this.questions.length} on MindPlay Quiz! 🧠`;
+        if (navigator.share) {
+            navigator.share({ text });
+        } else {
+            navigator.clipboard.writeText(text);
+            alert('Score copied to clipboard!');
+        }
+    }
+    showScreens(id) {
+        document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
+    }
+    shuffle(array) {
+        for (let i = array.length - 1; i > 0; i--) {
+            const j = Math.floor(Math.random() * (i + 1));
+            [array[i], array[j]] = [array[j], array[i]];
+        }
+        return array;
+    }
+    playConfetti() {
+        const canvas = document.querySelector('.confetti');
+        if (!canvas) return;
+        const ctx = canvas.getContext('2d');
+        canvas.width = window.innerWidth;
+        canvas.height = window.innerHeight;
+        const particles = [];
+        const colors = ['#667eea', '#764ba2', '#f0932b', '#48bb78', '#f56565'];
+        for (let i = 0; i < 100; i++) {
+            particles.push({
+                x: Math.random() * canvas.width,
+                y: Math.random() * canvas.height - canvas.height,
+                color: colors[Math.floor(Math.random() * colors.length)],
+                size: Math.random() * 10 + 5,
+                speed: Math.random() * 3 + 2
+            });
+        }
+        function animate() {
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+            particles.forEach(p => {
+                p.y += p.speed;
+                if (p.y > canvas.height) p.y = -10;
+                ctx.fillStyle = p.color;
+                ctx.fillRect(p.x, p.y, p.size, p.size);
+            });
+            requestAnimationFrame(animate);
+        }
+        animate();
+    }
+}
+
+// Personality Data + App
+const personalityData = {
+    questions: [
+        {id: 'E', text: "I feel energized when I'm around people.", dimension: "EI"},
+        {id: 'I', text: "I need quiet time to recharge after social events.", dimension: "EI"},
+        {id: 'E', text: "I enjoy working in teams and collaborating.", dimension: "EI"},
+        {id: 'I', text: "I prefer working independently on complex problems.", dimension: "EI"},
+        {id: 'E', text: "I express my thoughts openly and frequently.", dimension: "EI"},
+        {id: 'S', text: "I trust concrete facts and experience over theories.", dimension: "SN"},
+        {id: 'N', text: "I enjoy thinking about abstract concepts and possibilities.", dimension: "SN"},
+        {id: 'S', text: "I focus on practical details in my work.", dimension: "SN"},
+        {id: 'N', text: "I prefer creative solutions over conventional ones.", dimension: "SN"},
+        {id: 'S', text: "I learn best by doing and practicing.", dimension: "SN"},
+        {id: 'T', text: "I make decisions based on logic rather than emotions.", dimension: "TF"},
+        {id: 'F', text: "I consider how my decisions affect others.", dimension: "TF"},
+        {id: 'T', text: "I value truth and fairness over tact.", dimension: "TF"},
+        {id: 'F', text: "I show empathy and care for others' feelings.", dimension: "TF"},
+        {id: 'T', text: "I prefer constructive criticism over empty praise.", dimension: "TF"},
+        {id: 'J', text: "I like to have clear plans and schedules.", dimension: "JP"},
+        {id: 'P', text: "I adapt easily to changing circumstances.", dimension: "JP"},
+        {id: 'J', text: "I prefer things to be organized and orderly.", dimension: "JP"},
+        {id: 'P', text: "I enjoy spontaneous adventures.", dimension: "JP"},
+        {id: 'J', text: "I set deadlines and stick to them.", dimension: "JP"},
+        {id: 'N', text: "I think about the future and possibilities.", dimension: "SN"},
+        {id: 'F', text: "I make emotionally-driven decisions.", dimension: "TF"},
+        {id: 'P', text: "I keep my options open as long as possible.", dimension: "JP"},
+        {id: 'E', text: "I enjoy being the center of attention.", dimension: "EI"}
+    ],
+    personalities: [
+        {code: 'INTJ', name: 'Architect', description: 'Imaginative and strategic thinkers with a plan for everything.', strengths: ['Rational', 'Independent', 'Determined'], careers: ['Strategic Planner', 'Software Architect', 'Research Scientist'], color: '#667eea'},
+        {code: 'INTP', name: 'Logician', description: 'Creative inventors who love solving complex problems.', strengths: ['Analytical', 'Curious', 'Innovative'], careers: ['Data Scientist', ' philosopher', 'Engineer'], color: '#764ba2'},
+        {code: 'ENTJ', name: 'Commander', description: 'Bold and decisive leaders who take charge.', strengths: ['Confident', 'Organized', 'Strategic'], careers: ['CEO', 'Management', 'Entrepreneur'], color: '#f0932b'},
+        {code: 'ENTP', name: 'Debater', description: 'Smart and curious minds who love debate.', strengths: ['Enthusiastic', 'Creative', 'Outgoing'], careers: ['Lawyer', 'Marketer', 'Inventor'], color: '#48bb78'},
+        {code: 'INFJ', name: 'Advocate', description: 'Quiet mystics with deep insight and principle.', strengths: ['Insightful', 'Principled', 'Inspirational'], careers: ['Counselor', 'Writer', 'Nonprofit Leader'], color: '#6c5ce7'},
+        {code: 'INFP', name: 'Mediator', description: 'Poetic and compassionate dreamers.', strengths: ['Idealistic', 'Artistic', 'Harmonious'], careers: ['Artist', 'Writer', 'Psychologist'], color: '#a29bfe'},
+        {code: 'ENFJ', name: 'Protagonist', description: 'Charismatic leaders who inspire others.', strengths: ['Charming', 'Altruistic', 'Popular'], careers: ['Teacher', 'HR Manager', 'Politician'], color: '#fd79a8'},
+        {code: 'ENFP', name: 'Campaigner', description: 'Enthusiastic and creative free spirits.', strengths: ['Energetic', 'Optimistic', 'Spontaneous'], careers: ['Actor', 'Journalist', 'Entrepreneur'], color: '#fdcb6e'},
+        {code: 'ISTJ', name: 'Logistician', description: 'Practical and reliable fact-finders.', strengths: ['Organized', 'Detail-oriented', 'Dedicated'], careers: ['Accountant', 'Manager', 'Administrator'], color: '#636e72'},
+        {code: 'ISFJ', name: 'Defender', description: 'Quiet protectors who value loyalty.', strengths: ['Reliable', 'Patient', 'Devoted'], careers: ['Nurse', 'Teacher', 'Social Worker'], color: '#74b9ff'},
+        {code: 'ESTJ', name: 'Executive', description: 'Excellent organizers who get things done.', strengths: ['Efficient', 'Direct', 'Responsible'], careers: ['Business Manager', 'Police Officer', 'Judge'], color: '#00b894'},
+        {code: 'ESFJ', name: 'Consul', description: 'Caring and social organizers who help others.', strengths: ['Cooperative', 'Social', 'Practical'], careers: ['Nurse', 'Teacher', 'HR'], color: '#e17055'},
+        {code: 'ISTP', name: 'Virtuoso', description: 'Practical and skillful problem solvers.', strengths: ['Practical', 'Flexible', 'Logical'], careers: ['Engineer', 'Pilot', 'Mechanic'], color: '#2d3436'},
+        {code: 'ISFP', name: 'Adventurer', description: 'Flexible and artistic explorers.', strengths: ['Artistic', 'Gentle', 'Sensory'], careers: ['Designer', 'Chef', 'Artist'], color: '#dfe6e9'},
+        {code: 'ESTP', name: 'Entrepreneur', description: 'Smart and energetic problem solvers.', strengths: ['Energetic', 'Pragmatic', 'Persuasive'], careers: ['Sales', 'Entrepreneur', 'Politician'], color: '#d63031'},
+        {code: 'ESFP', name: 'Entertainer', description: 'Spontaneous and enthusiastic performers.', strengths: ['Fun-loving', 'Energetic', 'Spontaneous'], careers: ['Actor', 'Performer', 'Sales'], color: '#fd79a8'}
+    ]
+};
+
+let personalityTest = null;
+function initPersonality() {
+    if (personalityTest) return;
+    personalityTest = new PersonalityTest();
+}
+
+class PersonalityTest {
+    constructor() {
+        this.currentQuestion = 0;
+        this.answers = { E: 0, I: 0, S: 0, N: 0, T: 0, F: 0, J: 0, P: 0 };
+        this.personalityType = null;
+        this.bindEvents();
+    }
+    bindEvents() {
+        const startBtn = document.getElementById('start-test-btn');
+        if (startBtn) startBtn.addEventListener('click', () => this.startTest());
+        document.body.addEventListener('click', (e) => {
+            if (e.target.classList.contains('scale-btn')) {
+                this.selectOption(parseInt(e.target.dataset.value));
+            }
+        });
+    }
+    startTest() {
+        this.currentQuestion = 0;
+        this.answers = { E: 0, I: 0, S: 0, N: 0, T: 0, F: 0, J: 0, P: 0 };
+        document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
+        document.getElementById('questions-screen').classList.add('active');
+        this.showQuestion();
+    }
+    showQuestion() {
+        const q = personalityData.questions[this.currentQuestion];
+        if (!q) { this.showResults(); return; }
+        const dimensions = { EI: 'Extraversion vs Introversion', SN: 'Sensing vs Intuition', TF: 'Thinking vs Feeling', JP: 'Judging vs Perceiving' };
+        document.getElementById('question-counter').textContent = `Q${this.currentQuestion + 1}/${personalityData.questions.length}`;
+        document.getElementById('dimension-display').textContent = dimensions[q.dimension];
+        document.getElementById('question-container').innerHTML = `
+            <p class="question-text">${q.text}</p>
+            <div class="scale-container">
+                <button class="scale-btn" data-value="1">Strongly Disagree</button>
+                <button class="scale-btn" data-value="2">Disagree</button>
+                <button class="scale-btn" data-value="3">Neutral</button>
+                <button class="scale-btn" data-value="4">Agree</button>
+                <button class="scale-btn" data-value="5">Strongly Agree</button>
+            </div>
+        `;
+    }
+    selectOption(value) {
+        const q = personalityData.questions[this.currentQuestion];
+        if (q.id === 'E' || q.id === 'N' || q.id === 'T' || q.id === 'J') {
+            this.answers[q.id] += value;
+        } else {
+            const opposite = { 'I': 'E', 'S': 'N', 'F': 'T', 'P': 'J' };
+            this.answers[opposite[q.id]] += value;
+        }
+        this.currentQuestion++;
+        if (this.currentQuestion >= personalityData.questions.length) {
+            this.showResults();
+        } else {
+            this.showQuestion();
+        }
+    }
+    showResults() {
+        const code = (this.answers.E > this.answers.I ? 'E' : 'I') +
+                    (this.answers.S > this.answers.N ? 'S' : 'N') +
+                    (this.answers.T > this.answers.F ? 'T' : 'F') +
+                    (this.answers.J > this.answers.P ? 'J' : 'P');
+        const personality = personalityData.personalities.find(p => p.code === code) || personalityData.personalities[0];
+        document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
+        document.getElementById('results-screen').classList.add('active');
+        document.getElementById('personality-card').innerHTML = `
+            <div class="personality-code">${personality.code}</div>
+            <div class="personality-name">${personality.name}</div>
+            <p class="personality-description">${personality.description}</p>
+            <div class="traits-grid">
+                ${personality.strengths.map(s => `<div class="trait-badge"><strong>${s}</strong></div>`).join('')}
+            </div>
+            <div class="career-list">
+                <h4>Recommended Careers</h4>
+                <ul>
+                    ${personality.careers.map(c => `<li>${c}</li>`).join('')}
+                </ul>
+            </div>
+        `;
+    }
+}
+
+// Calculator vars + functions
+let display = '0';
+let operator = null;
+let previousValue = 0;
+let waitingForOperand = false;
+let memory = 0;
+let history = JSON.parse(localStorage.getItem('calcHistory')) || [];
+let currentTab = 'basic';
+
+function initCalculator() {
+    loadTab(currentTab);
+    updateHistory();
+}
+
+function loadTab(tab) {
+    currentTab = tab;
+    document.querySelectorAll('.tab-btn').forEach(btn => btn.classList.remove('active'));
+    document.querySelector(`[onclick="switchTab('${tab}')"]`).classList.add('active');
+    const container = document.getElementById('calculator-container');
+    const buttons = tab === 'basic' ? basicButtons : scientificButtons;
+    container.innerHTML = `
+        <input type="text" class="display" id="calc-display" value="${display}" readonly>
+        <div class="buttons-grid">
+            ${buttons.map(b => `<button class="btn ${b.class}" onclick="${b.onclick}">${b.text}</button>`).join('')}
+        </div>
+    `;
+}
+
+function switchTab(tab) {
+    loadTab(tab);
+}
+
+const basicButtons = [
+    { text: 'C', class: 'btn-clear', onclick: 'clearDisplay()' },
+    { text: '⌫', class: 'btn-function', onclick: 'deleteLast()' },
+    { text: '%', class: 'btn-operator', onclick: 'setOperator("%")' },
+    { text: '÷', class: 'btn-operator', onclick: 'setOperator("/")' },
+    { text: '7', class: 'btn-number', onclick: 'appendToDisplay("7")' },
+    { text: '8', class: 'btn-number', onclick: 'appendToDisplay("8")' },
+    { text: '9', class: 'btn-number', onclick: 'appendToDisplay("9")' },
+    { text: '×', class: 'btn-operator', onclick: 'setOperator("*")' },
+    { text: '4', class: 'btn-number', onclick: 'appendToDisplay("4")' },
+    { text: '5', class: 'btn-number', onclick: 'appendToDisplay("5")' },
+    { text: '6', class: 'btn-number', onclick: 'appendToDisplay("6")' },
+    { text: '-', class: 'btn-operator', onclick: 'setOperator("-")' },
+    { text: '1', class: 'btn-number', onclick: 'appendToDisplay("1")' },
+    { text: '2', class: 'btn-number', onclick: 'appendToDisplay("2")' },
+    { text: '3', class: 'btn-number', onclick: 'appendToDisplay("3")' },
+    { text: '+', class: 'btn-operator', onclick: 'setOperator("+")' },
+    { text: 'M+', class: 'btn-memory', onclick: 'memoryAdd()' },
+    { text: '0', class: 'btn-number', onclick: 'appendToDisplay("0")' },
+    { text: '.', class: 'btn-number', onclick: 'appendToDisplay(".")' },
+    { text: '=', class: 'btn-equals', onclick: 'calculate()' }
+];
+
+const scientificButtons = [
+    { text: 'C', class: 'btn-clear', onclick: 'clearDisplay()' },
+    { text: '⌫', class: 'btn-function', onclick: 'deleteLast()' },
+    { text: 'sin', class: 'btn-function', onclick: 'calcFunction("sin")' },
+    { text: 'cos', class: 'btn-function', onclick: 'calcFunction("cos")' },
+    { text: '7', class: 'btn-number', onclick: 'appendToDisplay("7")' },
+    { text: '8', class: 'btn-number', onclick: 'appendToDisplay("8")' },
+    { text: '9', class: 'btn-number', onclick: 'appendToDisplay("9")' },
+    { text: '÷', class: 'btn-operator', onclick: 'setOperator("/")' },
+    { text: '4', class: 'btn-number', onclick: 'appendToDisplay("4")' },
+    { text: '5', class: 'btn-number', onclick: 'appendToDisplay("5")' },
+    { text: '6', class: 'btn-number', onclick: 'appendToDisplay("6")' },
+    { text: '×', class: 'btn-operator', onclick: 'setOperator("*")' },
+    { text: '1', class: 'btn-number', onclick: 'appendToDisplay("1")' },
+    { text: '2', class: 'btn-number', onclick: 'appendToDisplay("2")' },
+    { text: '3', class: 'btn-number', onclick: 'appendToDisplay("3")' },
+    { text: '-', class: 'btn-operator', onclick: 'setOperator("-")' },
+    { text: 'tan', class: 'btn-function', onclick: 'calcFunction("tan")' },
+    { text: '0', class: 'btn-number', onclick: 'appendToDisplay("0")' },
+    { text: '.', class: 'btn-number', onclick: 'appendToDisplay(".")' },
+    { text: '=', class: 'btn-equals', onclick: 'calculate()' }
+];
+
+function updateDisplay() {
+    const el = document.getElementById('calc-display');
+    if (el) el.value = display;
+}
+
+function appendToDisplay(val) {
+    if (waitingForOperand) {
+        display = val;
+        waitingForOperand = false;
+    } else {
+        display = display === '0' ? val : display + val;
+    }
+    updateDisplay();
+}
+
+function setOperator(op) {
+    operator = op;
+    previousValue = parseFloat(display);
+    waitingForOperand = true;
+}
+
+function calculate() {
+    if (!operator) return;
+    const current = parseFloat(display);
+    let result;
+    switch(operator) {
+        case '+': result = previousValue + current; break;
+        case '-': result = previousValue - current; break;
+        case '*': result = previousValue * current; break;
+        case '/': result = current !== 0 ? previousValue / current : 'Error'; break;
+        case '%': result = previousValue % current; break;
+        default: result = current;
+    }
+    addToHistory(`${previousValue} ${operator} ${current} = ${result}`);
+    display = String(result);
+    operator = null;
+    waitingForOperand = true;
+    updateDisplay();
+}
+
+function clearDisplay() {
+    display = '0';
+    operator = null;
+    previousValue = 0;
+    waitingForOperand = false;
+    updateDisplay();
+}
+
+function deleteLast() {
+    display = display.length > 1 ? display.slice(0, -1) : '0';
+    updateDisplay();
+}
+
+function memoryAdd() {
+    memory += parseFloat(display) || 0;
+    addToHistory(`M+ ${display}`);
+}
+
+function memoryRecall() {
+    display = String(memory);
+    updateDisplay();
+}
+
+function memoryClear() {
+    memory = 0;
+}
+
+function calcFunction(func) {
+    const val = parseFloat(display);
+    let result;
+    switch(func) {
+        case 'sin': result = Math.sin(val * Math.PI / 180); break;
+        case 'cos': result = Math.cos(val * Math.PI / 180); break;
+        case 'tan': result = Math.tan(val * Math.PI / 180); break;
+        default: result = val;
+    }
+    display = String(result);
+    addToHistory(`${func}(${val}) = ${result}`);
+    updateDisplay();
+}
+
+function addToHistory(entry) {
+    history.unshift(entry);
+    if (history.length > 50) history.pop();
+    localStorage.setItem('calcHistory', JSON.stringify(history));
+    updateHistory();
+}
+
+function updateHistory() {
+    const el = document.getElementById('history-list');
+    if (el) el.innerHTML = history.length ? history.map(h => `<div class="history-item">${h}</div>`).join('') : 'No calculations yet';
+}
+
+function clearHistory() {
+    history = [];
+    localStorage.removeItem('calcHistory');
+    updateHistory();
+}
+
+// Init on load
+document.addEventListener('DOMContentLoaded', function() {
+    document.querySelectorAll('.nav-link[data-target]').forEach(link => {
+        link.addEventListener('click', (e) => {
+            e.preventDefault();
+            showSection(link.dataset.target);
+        });
+    });
+    showSection('home');
+});
+    </script>
+</body>
+</html>
